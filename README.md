@@ -1,4 +1,30 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#Run the project
+To successfully run the project first please install node and react and then run:
+### `npm install`
+To install dependencies. This application was developped using:
+Node v12.2.0
+npm  6.9.0
+
+All other dependencies are listed in package.json and should be installed using "npm install"
+
+
+
+## Deploying the application
+
+### `npm start` for local start of the app, which will serve it on localhost:3000
+### For deplyment with Docker you can use `docker build -t pokecube-react .` to create a container and then `docker run -it -p 8080:80 pokecube-react` to run in on localhost:8080. For further redirections, please refer to original documentation of the image used in the Dockerfile at: https://github.com/mhart/alpine-node 
+
+
+
+#Credits
+
+### Create React App
+This project was initially bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Little to none of this styling is left in the project, so please refer to the issue section of this repository and not to any third-party library or dependency such as [Create React App](https://github.com/facebook/create-react-app) if any problems araise with styling or functionality of this application.
+
+### Alphine Node
+This project uses the [Alphine Node](https://github.com/mhart/alpine-node) project as part of the included Dockerfile to allow continious integration and easier deployment.
+
+
 
 ## Available Scripts
 
@@ -33,11 +59,9 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
+## Learn More For React and Create React App
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
