@@ -11,8 +11,19 @@ All other dependencies are listed in package.json and should be installed using 
 
 ## Deploying the application
 
-### `npm start` for local start of the app, which will serve it on localhost:3000
-### For deplyment with Docker you can use `docker build -t pokecube-react .` to create a container and then `docker run -it -p 8080:80 pokecube-react` to run in on localhost:8080. For further redirections, please refer to original documentation of the image used in the Dockerfile at: https://github.com/mhart/alpine-node 
+### Use `npm start` 
+for local start of the app, which will serve it on localhost:3000
+
+
+ For deplyment with Docker you can use :
+
+ ### `docker build -t pokecube-react .` 
+ 
+ to create a container and then :
+
+ ###`docker run -it -p 8080:80 pokecube-react` 
+ 
+ to run in on localhost:8080. For further redirections, please refer to original documentation of the image used in the Dockerfile at: https://github.com/mhart/alpine-node 
 
 
 
