@@ -18,16 +18,16 @@ for local start of the app, which will serve it on localhost:3000
  For deplyment with Docker you can use :
 
  ### `docker build -t pokecube-react .` 
- 
+
  to create a container and then :
 
- ###`docker run -it -p 8080:80 pokecube-react` 
+ ### `docker run -it -p 8080:80 pokecube-react` 
  
  to run in on localhost:8080. For further redirections, please refer to original documentation of the image used in the Dockerfile at: https://github.com/mhart/alpine-node 
 
 
 
-#Credits
+# Credits
 
 ### Create React App
 This project was initially bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Little to none of this styling is left in the project, so please refer to the issue section of this repository and not to any third-party library or dependency such as [Create React App](https://github.com/facebook/create-react-app) if any problems araise with styling or functionality of this application.
