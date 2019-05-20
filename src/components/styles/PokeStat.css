@@ -1,3 +1,8 @@
-img{
-    background-color: #f32331
+.icon{
+    height: 15px;
+    width: 15px;
+}
+
+.stat-bar *{
+    margin: 0 8px;
 }
