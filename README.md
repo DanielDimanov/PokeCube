@@ -35,6 +35,9 @@ This project was initially bootstrapped with [Create React App](https://github.c
 ### Alphine Node
 This project uses the [Alphine Node](https://github.com/mhart/alpine-node) project as part of the included Dockerfile to allow continious integration and easier deployment.
 
+### React Request
+This project uses [React Request](https://www.npmjs.com/package/react-request), which allows for structured, easy and clear API calls and boosts the readability of the code.
+
 
 
 ## Available Scripts
