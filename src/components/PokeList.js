@@ -6,6 +6,16 @@ import PokeBall from './PokeBall';
 //Import styling
 import './styles/PokeList.css';
 
+
+// Map through pokemons
+/* pokemons.map(pokemon => 
+    <section className="poke-list">
+        <PokeBall pokemonEndpoint="https://pokeapi.co/api/v2/pokemon/25/"/>
+    </section>
+);*/
+
+
+//TODO Convert to class component
 const PokeList = () => {
   return (
     <section className="poke-list">

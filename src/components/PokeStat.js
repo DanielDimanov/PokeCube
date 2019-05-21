@@ -10,7 +10,6 @@ const PokeStat = props => {
     let statValue = pokemon.stats[statDictionary[props.stat]].base_stat;
     // let imgPath = '../assets/icons/'+pokemon.types[0].type.name+'.png';
     let statIconPath = process.env.PUBLIC_URL+"/icons/"+props.stat +'.png';
-    console.log(statIconPath);
   return (
     // TODO change placeholder
     <div>

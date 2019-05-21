@@ -5,8 +5,10 @@
     width: 99%;
     height: 99%;
     padding-left: 10px;
-    margin: 50px auto;
+    margin: 5px auto;
     background-color: rgb(236, 215, 223);
     border-radius: 10px;
     box-shadow: 0 14px 45px rgba(0, 0, 0, 0.22), 0 18px 45px rgba(0, 0, 0, 0.22);
   }
+
+

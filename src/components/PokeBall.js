@@ -5,6 +5,8 @@ import { Fetch } from 'react-request';
 import './styles/PokeBall.css';
 import PokeStat from './PokeStat';
 
+
+//TODO Convert to class component
 const PokeBall = props => {
 
   return (
@@ -24,7 +26,7 @@ const PokeBall = props => {
               <div>
                 <div className="poke-name">{data.name}</div>
                 <div className="poke-pic">
-                    <img src={data.sprites.front_default}/>
+                    <img src={data.sprites.front_default} alt="pokemon"/>
                 </div>
                 <div className="stats">
                     <div className="hp-stat">
