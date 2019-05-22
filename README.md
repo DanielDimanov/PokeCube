@@ -1,4 +1,13 @@
-#Run the project
+#PokeCube
+This project intends to:
+1. Allow users to browse Pokemons
+2. Allow users to read and visualise Pokemon statistics
+3. Allow users to compare Pokemon statistics for different Pokemons
+4. Allows the user to login with Google and store his/hers favourite Pokemons
+
+The project uses [PokeAPI](https://pokeapi.co/docs/v2.html) . All data displayed is collected with API calls to the API and is not stored in order to comply to the API [Fair Use Policy and limitations](https://pokeapi.co/docs/v2.html) the project caches all resources using [Firebase](https://console.firebase.google.com/). The limit of the API calls is 100 per minute from host, so the calls are limited to just one when the site loads to update for potential new Pokemons and if there are newfounds, then API calls for each new Pokemon are made JUST ONCE to update the records in Firebase. 
+
+# Run the project
 To successfully run the project first please install node and react and then run:
 ### `npm install`
 To install dependencies. This application was developped using:
@@ -7,21 +16,38 @@ npm  6.9.0
 
 All other dependencies are listed in package.json and should be installed using "npm install"
 
+###Notice:
+Please notice that the firebase api keys and credentials are stored using `process.env.REACT_APP` variables. To run the applications without errors you need to:
+
+1. Create `.env` file in the root directory of the project
+
+2. Add all corresponding fields following this template (also available as txt file called `envPlaceholder.txt`):
+REACT_APP_API_KEY=[your_api_key]
+REACT_APP_AUTH_DOMAIN=[your_auth_domain]
+REACT_APP_DATABASE_URL=[your_database_url]
+REACT_APP_PROJECT_ID=[your_project_id]
+REACT_APP_STORAGE_BUCKET=[your_storage_bucket]
+REACT_APP_MESSAGING_SENDER_ID=[your_app_messaging_sender_id]
+
+3. If you use the template file you might want to rename the file and the extension to [blankName].env, so : `.env`.
+
+4. Happy hacking
+
 
 
 ## Deploying the application
 
-### Use `npm start` 
+Use `npm start` 
 for local start of the app, which will serve it on localhost:3000
 
 
  For deplyment with Docker you can use :
 
- ### `docker build -t pokecube-react .` 
+`docker build -t pokecube-react .` 
 
  to create a container and then :
 
- ### `docker run -it -p 8080:80 pokecube-react` 
+ `docker run -it -p 8080:80 pokecube-react` 
  
  to run in on localhost:8080. For further redirections, please refer to original documentation of the image used in the Dockerfile at: https://github.com/mhart/alpine-node 
 
