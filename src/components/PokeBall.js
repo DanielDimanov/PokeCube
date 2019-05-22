@@ -9,8 +9,13 @@ import PokeStat from './PokeStat';
 //TODO Convert to class component
 const PokeBall = props => {
 
+    let clName="";
+    props.compare
+    ? clName="compare-"
+    : clName="";
+
   return (
-      <div className="poke-ball">
+      <div className={clName+"poke-list"}>
         <Fetch url={props.pokemonEndpoint} >
         {({ fetching, failed, data }) => {
           if (fetching) {
@@ -24,21 +29,26 @@ const PokeBall = props => {
           if (data) {
             return (
               <div>
-                <div className="poke-name">{data.name}</div>
-                <div className="poke-pic">
+                {
+                    
+                }
+                <div className={clName+"poke-name"}>
+                    {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
+                </div>
+                <div className={clName+"poke-pic"}>
                     <img src={data.sprites.front_default} alt="pokemon"/>
                 </div>
-                <div className="stats">
-                    <div className="hp-stat">
+                <div className={clName+"stats"}>
+                    <div className={clName+"hp-stat"}>
                         <PokeStat pokemon={data} stat="hp"/>
                     </div>
-                    <div className="atk-stat">
+                    <div className={clName+"atk-stat"}>
                         <PokeStat pokemon={data} stat="attack"/>
                     </div>
-                    <div className="def-stat">
+                    <div className={clName+"def-stat"}>
                         <PokeStat pokemon={data} stat="defence"/>
                     </div>
-                    <div className="energy-stat">
+                    <div className={clName+"energy-stat"}>
                         <PokeStat pokemon={data} stat="speed"/>
                     </div>
                 </div>

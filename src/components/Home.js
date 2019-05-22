@@ -12,7 +12,7 @@ import PokeList from './PokeList';
 //Import styling
 import './styles/App.css';
 
-class App extends Component {
+class Home extends Component {
 
   render() {
     //Firebase session
@@ -34,4 +34,4 @@ class App extends Component {
   }
 }
 
-export default withFirebaseAuth({providers,firebaseAppAuth})(App);
+export default withFirebaseAuth({providers,firebaseAppAuth})(Home);
