@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import { Fetch } from 'react-request';
 //Import components
 import PokeBall from './PokeBall';
@@ -16,26 +16,38 @@ import './styles/PokeList.css';
 
 
 //TODO Convert to class component
-const PokeList = props => {
-  return (
-    <section>
-        {
-            props.compare
-            ? 
-            <div className="compare-list" compare={props.compare}>
-                <PokeBall pokemonEndpoint="https://pokeapi.co/api/v2/pokemon/25/" compare={props.compare}/>
-            </div>
-            :
-            <div className="poke-list">
-                <PokeBall pokemonEndpoint="https://pokeapi.co/api/v2/pokemon/25/"/>
-            </div>
-        }
-        {/* <PokeBall pokemonEndpoint="https://pokeapi.co/api/v2/pokemon/25/"/> */}
+class PokeList extends Component{
 
-        {/* Test call to avoid exhausing the endpoint calls 
-        and get flagged for DDOS. */}
-    </section>
-  )
+    constructor(props){
+        super(props);
+    }
+
+    selectPokemonInList = (id) =>{
+        this.props.selectPokemon(id);
+
+        // this.setState(prevState => ({
+        //     piska: !this.prevState.pishka
+        // }));
+    }
+
+    render(){
+        return (
+            <section>
+                {
+                    this.props.compare
+                    ? 
+                    <div className="compare-list">
+                        <PokeBall pokemonEndpoint="25" compare={this.props.compare} selectPokemon={this.selectPokemonInList}/>
+                        <PokeBall pokemonEndpoint="26" compare={this.props.compare} selectPokemon={this.selectPokemonInList}/>
+                    </div>
+                    :
+                    <div className="poke-list">
+                        <PokeBall pokemonEndpoint="25"/>
+                    </div>
+                }
+            </section>
+          );
+    }
 }
 
 

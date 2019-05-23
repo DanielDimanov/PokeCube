@@ -2,6 +2,10 @@
     height: 15px;
     width: 15px;
 }
+.compare-icon{
+    height: 7px;
+    width: 7px;
+}
 
 .stat-bar *{
     margin: 0 8px;

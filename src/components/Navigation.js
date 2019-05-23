@@ -6,9 +6,10 @@ import Compare from './Compare';
 
 //Import Firebase
 import {providers,firebaseAppAuth} from './Firebase';
-
+import { FirestoreProvider } from "@react-firebase/firestore";
 import withFirebaseAuth from 'react-with-firebase-auth';
 import 'firebase/auth';
+import firebaseConfig from '../env/firebaseConfig';
 
 //Import Router
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";

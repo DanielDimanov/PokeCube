@@ -13,10 +13,11 @@ const PokeStat = props => {
   return (
     // TODO change placeholder
     <div>
-        <p className="stat-bar">
+        <p className={props.compare + "stat-bar"}>
             <img className="icon" title={props.stat} src={statIconPath} />
             {statValue} 
-            <progress max="100" value={statValue}> {statValue} </progress>
+            {/* <progress max="100" value={statValue}> {statValue} </progress> */}
+            <meter id={props.stat} name={props.stat} min="0" max="100" low="33" high="66" optimum="80" value={statValue}>{statValue}</meter>
         </p>
     </div>
   )
