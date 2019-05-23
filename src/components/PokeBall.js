@@ -12,6 +12,7 @@ import { firebaseFirestore} from './Firebase';
 class PokeBall extends Component{
 
     clName="";
+    cachedData="";
     endpointBase="https://pokeapi.co/api/v2/pokemon/";
 
     constructor(props){
@@ -23,119 +24,88 @@ class PokeBall extends Component{
 
     storePokemon(id,pokemon){
         const db = firebaseFirestore;
-        db.settings({
-            timestampsInSnapshots: true
-        });
         return db.collection("pokemons").doc(id).set(pokemon);
     }
 
+    async isCached(id){
+      await firebaseFirestore.collection('pokemons').doc(id).get().then(doc => {
+        if (!doc.exists) {
+          return false;
+        } else {
+          console.log('Document data:', doc.data());
+          this.cachedData = doc.data();
+          return true;
+        }
+      })
+      .catch(err => {
+        console.log('Error getting document', err);
+      });
+    }
 
+    pokeBallStructure = data => {
+      return(
+        <div>
+        <div className={this.clName+"poke-name"}>
+            {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
+        </div>
+        <div className={this.clName+"poke-pic"}>
+             <img src={data.sprites.front_default} alt={"pokemon-"+ this.props.pokemonEndpoint} />
+        </div>
+        <div className={this.clName+"stats"}>
+            <div className={this.clName+"hp-stat"}>
+                <PokeStat pokemon={data} stat="hp" compare={this.clName}/>
+            </div>
+            <div className={this.clName+"atk-stat"}>
+                <PokeStat pokemon={data} stat="attack" compare={this.clName}/>
+            </div>
+            <div className={this.clName+"def-stat"}>
+                <PokeStat pokemon={data} stat="defence" compare={this.clName}/>
+            </div>
+            <div className={this.clName+"energy-stat"}>
+                <PokeStat pokemon={data} stat="speed" compare={this.clName}/>
+            </div>
+        </div>
+        </div>
+      );
+    }
 
     render(){
-        //FIX
-        if(true){
+        if(async () => await this.isCached(this.props.pokemonEndpoint)==false){
           return (
             <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : alert("Please don't disturb the pokemons!")}>
-              <Fetch url={this.endpointBase+this.props.pokemonEndpoint} >
-              {({ fetching, failed, data }) => {
-                if (fetching) {
-                  return <div>Loading data...</div>;
-                }
-       
-                if (failed) {
-                  return <div>The request did not succeed.</div>;
-                }
-       
-                if (data) {
-                  this.storePokemon(this.props.pokemonEndpoint,data);
-                  return(
-                    <div>
-                    <div className={this.clName+"poke-name"}>
-                        {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
-                    </div>
-                    <div className={this.clName+"poke-pic"}>
-                         <img src={data.sprites.front_default} alt={"pokemon-"+ this.props.pokemonEndpoint} />
-                    </div>
-                    <div className={this.clName+"stats"}>
-                        <div className={this.clName+"hp-stat"}>
-                            <PokeStat pokemon={data} stat="hp" compare={this.clName}/>
-                        </div>
-                        <div className={this.clName+"atk-stat"}>
-                            <PokeStat pokemon={data} stat="attack" compare={this.clName}/>
-                        </div>
-                        <div className={this.clName+"def-stat"}>
-                            <PokeStat pokemon={data} stat="defence" compare={this.clName}/>
-                        </div>
-                        <div className={this.clName+"energy-stat"}>
-                            <PokeStat pokemon={data} stat="speed" compare={this.clName}/>
-                        </div>
-                    </div>
-                    </div>
-                  );
-                }
-       
-                return null;
-              }}
-            </Fetch>
+                <Fetch url={this.endpointBase+this.props.pokemonEndpoint} >
+                {({ fetching, failed, data }) => {
+                  if (fetching) {
+                    return <div>Loading data...</div>;
+                  }
+        
+                  if (failed) {
+                    return <div>The request did not succeed.</div>;
+                  }
+        
+                  if (data) {
+                    this.storePokemon(this.props.pokemonEndpoint,data);
+                    return(
+                      this.pokeBallStructure(data)
+                    );
+                  }
+        
+                  return null;
+                }}
+              </Fetch>
           </div>
         )
-      }
+        }
         else{
-          console.log('Cached');
+          return (
+            <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : alert("Please don't disturb the pokemons!")}>
+              { this.pokeBallStructure(this.cachedData)}
+            </div>
+          )
         }
         
     }
 }
-// const PokeBall = props => {
-
-//   return (
-//       <div className={clName+"poke-list"}>
-//         <Fetch url={props.pokemonEndpoint} >
-//         {({ fetching, failed, data }) => {
-//           if (fetching) {
-//             return <div>Loading data...</div>;
-//           }
- 
-//           if (failed) {
-//             return <div>The request did not succeed.</div>;
-//           }
- 
-//           if (data) {
-//             return (
-//               <div>
-//                 {
-                    
-//                 }
-//                 <div className={clName+"poke-name"}>
-//                     {data.name.charAt(0).toUpperCase() + data.name.slice(1)}
-//                 </div>
-//                 <div className={clName+"poke-pic"}>
-//                     <img src={data.sprites.front_default} alt="pokemon"/>
-//                 </div>
-//                 <div className={clName+"stats"}>
-//                     <div className={clName+"hp-stat"}>
-//                         <PokeStat pokemon={data} stat="hp"/>
-//                     </div>
-//                     <div className={clName+"atk-stat"}>
-//                         <PokeStat pokemon={data} stat="attack"/>
-//                     </div>
-//                     <div className={clName+"def-stat"}>
-//                         <PokeStat pokemon={data} stat="defence"/>
-//                     </div>
-//                     <div className={clName+"energy-stat"}>
-//                         <PokeStat pokemon={data} stat="speed"/>
-//                     </div>
-//                 </div>
-//               </div>
-//             );
-//           }
- 
-//           return null;
-//         }}
-//       </Fetch>
-//     </div>
-//   )
-// }
 
 
 export default PokeBall;
