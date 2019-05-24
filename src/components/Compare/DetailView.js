@@ -9,6 +9,7 @@ class DetailView extends Component{
   constructor(props){
     super(props);
     this.state={selectedPokemon:null};
+    this.selectPokemon.bind(this);
   }
 
   selectPokemon = (id) => {
@@ -39,7 +40,7 @@ class DetailView extends Component{
           {
               this.state.selectedPokemon
               ? <PokeBall pokemonEndpoint={this.state.selectedPokemon} selectPokemon={this.selectPokemon}/>
-              : <p>Please select a Pokemon for comparison</p>
+              :<p>Please select a Pokemon for comparison</p>
           }
         </div>
         <PokeList compare="true" selectPokemon={this.selectPokemon}/>
