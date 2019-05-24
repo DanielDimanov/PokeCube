@@ -12,14 +12,15 @@ class DetailView extends Component{
     this.selectPokemon.bind(this);
   }
 
+
   selectPokemon = (id) => {
     if(this.state.selectedPokemon !=id){
-      this.setState({selectedPokemon:id});
       ReactDOM.findDOMNode(this.refs.chosenPokemon).style.display = 'block';
+      this.setState({selectedPokemon:id});
     }
     else{
-      this.setState({selectPokemon:null});
       ReactDOM.findDOMNode(this.refs.chosenPokemon).style.display = 'none';
+      this.setState({selectPokemon:null});
     }
   }
 
