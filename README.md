@@ -7,6 +7,20 @@ This project intends to:
 
 The project uses [PokeAPI](https://pokeapi.co/docs/v2.html) . All data displayed is collected with API calls to the API and is not stored in order to comply to the API [Fair Use Policy and limitations](https://pokeapi.co/docs/v2.html) the project caches all resources using [Firebase](https://console.firebase.google.com/). The limit of the API calls is 100 per minute from host, so the calls are limited to just one when the site loads to update for potential new Pokemons and if there are newfounds, then API calls for each new Pokemon are made JUST ONCE to update the records in Firebase. 
 
+If a pokemon is fetched form the [PokeAPI](https://pokeapi.co/docs/v2.html) and is not present in the current cache (Firebase), then it is automatically stored and displayed from the [PokeAPI](https://pokeapi.co/docs/v2.html).
+
+#DISCLAIMERS and Limitations
+
+The application currently uses free-tier Firebase backend service for caching and information storage, as well as authentication, which only allows for 50k reads per DAY. A read is done in the following instances:
+1. Getting cached Pokemon (if 850 Pokemons are displayed => 850 reads are made. If the Compare panel is filled with 1700 Pokemons => 1700 requests are made)
+2. Getting favourite Pokemons => once per state change in Favourite page
+
+There are limits for data writes as well, which is 20k writes, but the writes are expected to be relatively very low compare to the reads. A write in the datastore is made in the following instances:
+1. User liked/disliked a Pokemon
+2. Pokemon was not cached and was fetched from the PokeAPI and is cached in Firebase
+
+Displaying 800+ pokemons requires lots of memory and some browsers (Like `Google Chrome`) throw an error, because of the predefined limitations, since the application is suspected of memory leakage. Work is currently being done to address this issue.
+
 # Run the project
 To successfully run the project first please install node and react and then run:
 ### `npm install`
