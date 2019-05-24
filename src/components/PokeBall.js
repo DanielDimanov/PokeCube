@@ -9,7 +9,9 @@ import Pokemon from './Pokemon';
 //Import Spinner
 import Spinner from 'react-spinner-material';
 
-// Firestore
+// Firebase and Firestore
+import withFirebaseAuth from 'react-with-firebase-auth';
+import {firebaseAppAuth,providers} from './Firebase';
 import { firebaseFirestore} from './Firebase';
 
 class PokeBall extends Component{
@@ -23,7 +25,7 @@ class PokeBall extends Component{
             props.compare
             ? this.clName="compare-"
             : this.clName="";
-        this.state={cached:false, cachedData:""};
+        this.state={pokemonEndpoint:"",ready:false,cached:false, cachedData:"",isFavourite:false};
     }
 
     bindMethods(that){
@@ -33,10 +35,10 @@ class PokeBall extends Component{
     }
 
     storePokemon(id,pokemon){
-        // if(!this.cachedData){
-        //   const db = firebaseFirestore;
-        //   return db.collection("pokemons").doc(id).set(pokemon);
-        // }
+        if(!this.state.cachedData){
+          const db = firebaseFirestore;
+          return db.collection("pokemons").doc(id).set(pokemon);
+        }
     }
 
     componentDidUpdate(){
@@ -48,27 +50,74 @@ class PokeBall extends Component{
     }
 
     componentWillReceiveProps({pokemonEndpoint}) {
-      this.setState({...this.state,pokemonEndpoint});
+      this.setState({pokemonEndpoint:pokemonEndpoint, ready:false});
     }
+    
 
     isCached(id){
       firebaseFirestore.collection('pokemons').doc(id).get().then(doc => {
         if (!doc.exists) {
-          this.setState({cached:false});
+          this.setState({cached:false,ready:true});
         } else {
-          this.setState({cached:true, cachedData:doc.data()});
+          this.setState({cached:true, cachedData:{name:doc.data().name, id:doc.data().id, stats:doc.data().stats, sprites:doc.data().sprites},ready:true});
         }
       })
       .catch(err => {
-        console.log('Error getting document', err);
+        console.log('Error getting document '+ id+ " error:", err);
       });
     }
+
+    recruitPokemon(id){
+      if (!this.props.user){
+        console.log("Click me all you want. You have to login as a trainer if you want to train me!");
+      }
+      else{
+        firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
+          this.setState({isFavourite:!this.state.isFavourite});
+          if (!doc.exists) {
+              let ids=[id];
+              return firebaseFirestore.collection("users").doc(this.props.user.uid).set({ids});
+          } else {
+              let ids = [];
+              ids=ids.concat(doc.data().ids);
+              let sameIdIndex = ids.indexOf(id);
+              if(sameIdIndex>-1){
+                ids.splice(sameIdIndex,1);
+              }
+              else{
+                ids.push(id);
+              }
+              console.log(ids);
+              return firebaseFirestore.collection("users").doc(this.props.user.uid).update({
+                ids
+              });
+          }
+        })
+        .catch(err => {
+          console.log('Error getting document '+ id+ " error:", err);
+        });
+      }
+    }
+
+    getFavImage(){
+      if(this.state.isFavourite){
+        return <p> Fav</p>
+      }else{
+        return <p> Not Fav</p>
+      }
+    }
+
 
     pokeBallStructure = data => {
       return(
         <div>
         <div className={this.clName+"poke-name"}>
             {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
+            {
+              this.props.user
+              ? this.getFavImage()
+              : ""
+            }
         </div>
         <div className={this.clName+"poke-pic"}>
              <img src={data.sprites.front_default} alt={"pokemon-"+ this.props.pokemonEndpoint} />
@@ -95,7 +144,7 @@ class PokeBall extends Component{
         if(!this.state.cached){
           if(this.state.ready){
             return (
-                <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : alert("Please don't disturb the pokemons!")}>
+                <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : this.recruitPokemon(this.props.pokemonEndpoint)}>
                     <Fetch url={this.endpointBase+this.props.pokemonEndpoint} >
                     {({ fetching, failed, data }) => {
                       if (fetching) {
@@ -125,7 +174,7 @@ class PokeBall extends Component{
         }
         else{
           return (
-            <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : alert("Please don't disturb the pokemons!")}>
+            <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : this.recruitPokemon(this.props.pokemonEndpoint)}>
               { this.pokeBallStructure(this.state.cachedData)}
             </div>
           )
@@ -135,4 +184,4 @@ class PokeBall extends Component{
 }
 
 
-export default PokeBall;
+export default withFirebaseAuth({providers,firebaseAppAuth})(PokeBall);

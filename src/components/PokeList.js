@@ -117,7 +117,12 @@ class PokeList extends Component{
         return (
             <section>
                 {
-
+                    this.props.favouriteIds
+                    ? 
+                    <div className="poke-ball-wrapper">
+                        {this.props.favouriteIds.map(id => <PokeBall key={""+id} pokemonEndpoint={""+id}/>)}
+                    </div>
+                    :
                     this.props.compare
                     ? 
                     <div className="compare-list">
@@ -127,6 +132,7 @@ class PokeList extends Component{
                     <div className="poke-list">
                         {this.fetchRequest(false)}
                     </div>
+                    
                 }
             </section>
           );
