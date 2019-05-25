@@ -21,40 +21,43 @@ class PokeBall extends Component{
   
     constructor(props){
         super(props);
-        this.bindMethods(this);
+        // this.bindMethods(this);
             props.compare
             ? this.clName="compare-"
             : this.clName="";
         this.state={pokemonEndpoint:"",ready:false,cached:false, cachedData:"",isFavourite:false};
     }
 
-    bindMethods(that){
-      that.pokeBallStructure = that.pokeBallStructure.bind(that);
-      that.storePokemon = that.storePokemon.bind(that);
-      that.isCached = that.isCached.bind(that);
-    }
+    // bindMethods(that){
+    //   that.pokeBallStructure = that.pokeBallStructure.bind(that);
+    //   that.storePokemon = that.storePokemon.bind(that);
+    //   that.isCached = that.isCached.bind(that);
+    // }
 
-    storePokemon(id,pokemon){
+    storePokemon= (id,pokemon)=>{
         if(!this.state.cachedData){
           const db = firebaseFirestore;
           return db.collection("pokemons").doc(id).set(pokemon);
         }
     }
 
-    componentDidUpdate(){
+    // componentDidUpdate(){
+    //   this.isCached(this.props.pokemonEndpoint);
+    // }
+
+    componentWillMount(){
       this.isCached(this.props.pokemonEndpoint);
     }
 
-    componentDidMount(){
-      this.isCached(this.props.pokemonEndpoint);
-    }
-
-    componentWillReceiveProps({pokemonEndpoint}) {
-      this.setState({pokemonEndpoint:pokemonEndpoint, ready:false});
+    componentWillReceiveProps({pokemon}) {
+      //TODO SETSTATE cachedData
+      if(pokemon){
+        this.setState({cached:true, cachedData:pokemon , ready:true, pokemonEndpoint:""+pokemon.id});
+      }
     }
     
 
-    isCached(id){
+    isCached= (id)=>{
       firebaseFirestore.collection('pokemons').doc(id).get().then(doc => {
         if (!doc.exists) {
           this.setState({cached:false,ready:true});
@@ -80,15 +83,13 @@ class PokeBall extends Component{
           } else {
               let ids = [];
               ids=ids.concat(doc.data().ids);
-              if(this.props.pokemonEndpoint in ids){
-                this.setState({isFavourite:true});
-              }
               let sameIdIndex = ids.indexOf(id);
               if(sameIdIndex>-1){
                 this.setState({isFavourite:!this.state.isFavourite});
                 ids.splice(sameIdIndex,1);
               }
               else{
+                this.setState({isFavourite:true});
                 ids.push(id);
               }
               console.log(ids);
@@ -104,29 +105,33 @@ class PokeBall extends Component{
     }
 
     getFavImage(){
-      let favIconPath;
-      if(this.state.isFavourite || this.props.isFavourite){
-        favIconPath = process.env.PUBLIC_URL+"/icons/fav.png";
+      let favIconPath="";
+      if(this.props.compare){
+        return "";
       }else{
-        favIconPath = process.env.PUBLIC_URL+"/icons/notFav.png";
+        if(this.state.isFavourite || this.props.isFavourite){
+          favIconPath = process.env.PUBLIC_URL+"/icons/fav.png";
+        }else{
+          favIconPath = process.env.PUBLIC_URL+"/icons/notFav.png";
+        }
       }
-      return favIconPath;
+      return <img className={this.clName+"favIcon"} title="favIcon" src={favIconPath}/>
     }
 
 
     pokeBallStructure = data => {
       return(
-        <div>
+        <div onClick={() => this.props.selectPokemon? this.props.selectPokemon(data) : this.recruitPokemon(data.id)}>
         <div className={this.clName+"poke-name"}>
             {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
             {
               this.props.user
-              ? <img className="icon" title="favIcon" src={this.getFavImage()} />
+              ? this.getFavImage()
               : ""
             }
         </div>
         <div className={this.clName+"poke-pic"}>
-             <img src={data.sprites.front_default} alt={"pokemon-"+ this.props.pokemonEndpoint} />
+             <img src={data.sprites.front_default} alt={"pokemon-"+ data.id} />
         </div>
         <div className={this.clName+"stats"}>
             <div className={this.clName+"hp-stat"}>
@@ -150,7 +155,7 @@ class PokeBall extends Component{
         if(!this.state.cached){
           if(this.state.ready){
             return (
-                <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : this.recruitPokemon(this.props.pokemonEndpoint)}>
+                <div className={this.clName+"poke-ball"}>
                     <Fetch url={this.endpointBase+this.props.pokemonEndpoint} >
                     {({ fetching, failed, data }) => {
                       if (fetching) {
@@ -179,11 +184,15 @@ class PokeBall extends Component{
           }
         }
         else{
-          return (
-            <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.props.pokemonEndpoint) : this.recruitPokemon(this.props.pokemonEndpoint)}>
-              { this.pokeBallStructure(this.state.cachedData)}
-            </div>
-          )
+          if(this.state.ready){
+            return (
+              <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.state.cachedData) : this.recruitPokemon(this.props.pokemonEndpoint)}>
+                { this.pokeBallStructure(this.state.cachedData)}
+              </div>
+            )
+          }else{
+            return <Spinner size={50} spinnerColor={"#333"} spinnerWidth={2} visible={true} />
+          }
         }
         
     }

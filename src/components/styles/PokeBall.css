@@ -63,3 +63,12 @@ div{
     font-size: 0.85em;
     text-align: center;
 }
+
+.favIcon{
+    height: 15px;
+    width: 15px;
+}
+
+.compare-favIcon{
+    visibility: hidden;
+}
