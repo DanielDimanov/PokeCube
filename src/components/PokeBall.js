@@ -21,18 +21,11 @@ class PokeBall extends Component{
   
     constructor(props){
         super(props);
-        // this.bindMethods(this);
             props.compare
             ? this.clName="compare-"
             : this.clName="";
         this.state={pokemonEndpoint:"",ready:false,cached:false, cachedData:"",isFavourite:false};
     }
-
-    // bindMethods(that){
-    //   that.pokeBallStructure = that.pokeBallStructure.bind(that);
-    //   that.storePokemon = that.storePokemon.bind(that);
-    //   that.isCached = that.isCached.bind(that);
-    // }
 
     storePokemon= (id,pokemon)=>{
         if(!this.state.cachedData){
@@ -50,7 +43,6 @@ class PokeBall extends Component{
     }
 
     componentWillReceiveProps({pokemon}) {
-      //TODO SETSTATE cachedData
       if(pokemon){
         this.setState({cached:true, cachedData:pokemon , ready:true, pokemonEndpoint:""+pokemon.id});
       }
