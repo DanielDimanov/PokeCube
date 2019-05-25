@@ -12,7 +12,7 @@ import 'firebase/auth';
 import firebaseConfig from '../env/firebaseConfig';
 
 //Import Router
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 
 //Import styling
 import './styles/Navigation.css';
@@ -38,10 +38,10 @@ class Navigation extends Component {
             <nav>
             <ul>
                 <li>
-                <Link to="/">Home</Link>
+                <NavLink to="/">Home</NavLink>
                 </li>
                 <li>
-                <Link to="/compare">Compare</Link>
+                <NavLink to="/compare">Compare</NavLink>
                 </li>
                
                 {/* Floatted right, so inverse order */}
@@ -54,9 +54,9 @@ class Navigation extends Component {
                 }
                 </li>
                 <li className="right-nav">
-                <Link to="/favourite">
+                <NavLink to="/favourite">
                     <img height="20px" alt="fav" src={process.env.PUBLIC_URL+"/icons/hp.png"}></img>
-                </Link>
+                </NavLink>
                 </li>
                 
             </ul>
