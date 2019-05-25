@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 //Import Firebase
 import {providers,firebaseAppAuth} from './Firebase';
-
+import { firebaseFirestore} from './Firebase';
 import withFirebaseAuth from 'react-with-firebase-auth';
 import 'firebase/auth';
 
@@ -14,21 +14,47 @@ import './styles/App.css';
 
 class Home extends Component {
 
+  constructor(props){
+    super(props);
+    this.state={favourites:undefined};
+    this.getAllFavourites = this.getAllFavourites.bind(this);
+  }
+
+  getAllFavourites(){
+    if (!this.props.user){
+      console.log("User needs to be logged in to retrieve favourites!");
+    }
+    else{
+      firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
+        if (doc.exists) {
+          let ids = [];
+          ids=ids.concat(doc.data().ids);
+          this.setState({favourites:ids});
+        } 
+      })
+      .catch(err => {
+        console.log("Error getting document  error:", err);
+      });
+    }
+  }
+
+  componentWillReceiveProps() {
+    this.getAllFavourites();
+  }
+
+  componentDidMount(){
+    this.getAllFavourites();
+  }
+
   render() {
     //Firebase session
-    const {
-      user,
-      signOut,
-      signInWithGoogle,
-    } = this.props;
-
-
-    
-
     return (
       <div className="App">
-        <PokeList>
-        </PokeList>
+        {
+          this.state.favourites
+          ? <PokeList favourites={this.state.favourites}/>
+          : <PokeList/>
+        }
       </div>
     );
   }

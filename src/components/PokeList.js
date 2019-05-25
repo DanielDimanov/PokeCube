@@ -18,6 +18,7 @@ class PokeList extends Component{
         super(props);
         this.state={ready:false,displayedItems:50};
         this.handleScroll = this.handleScroll.bind(this);
+        this.checkIfFavPokemon = this.checkIfFavPokemon.bind(this);
     }
 
     handleScroll() {
@@ -65,13 +66,25 @@ class PokeList extends Component{
         window.removeEventListener("scroll", this.handleScroll);
 
       }
+      
 
     selectPokemonInList = (id) =>{
         this.props.selectPokemon(id);
-        // this.setState(prevState => ({
-        //     piska: !this.prevState.pishka
-        // }));
     }
+
+    //TODO
+    checkIfFavPokemon(id){
+        if(this.props.favourites.includes(id)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    extractID(url){
+        return url.slice(34,url.length-1);
+    }
+
 
     fetchRequest(compareMode){
         return(
@@ -86,27 +99,26 @@ class PokeList extends Component{
                                 }
                     
                                 if (data) {
-                                var pokemonsCaught=[];
                                     if(compareMode){
                                         return(
                                             <div className="poke-ball-wrapper">
-                                                {data.results.map(pokemon=> <PokeBall key={pokemon.url.slice(34,pokemon.url.length-1)} pokemonEndpoint={pokemon.url.slice(34,pokemon.url.length-1)} compare={compareMode} selectPokemon={this.selectPokemonInList}/>)}
+                                                {
+                                                 data.results.map(pokemon=> <PokeBall key={this.extractID(pokemon.url)} pokemonEndpoint={this.extractID(pokemon.url)} compare={compareMode} selectPokemon={this.selectPokemonInList}/>)
+                                                }
                                             </div>
                                         );
                                     }
                                     else{
                                         return(
                                             <div className="poke-ball-wrapper">
-                                                {data.results.map(pokemon=> <PokeBall key={pokemon.url.slice(34,pokemon.url.length-1)} pokemonEndpoint={pokemon.url.slice(34,pokemon.url.length-1)}/>)}
+                                                {
+                                                    this.props.favourites
+                                                    ? data.results.map(pokemon=> <PokeBall isFavourite={this.checkIfFavPokemon(this.extractID(pokemon.url))} key={this.extractID(pokemon.url)} pokemonEndpoint={this.extractID(pokemon.url)}/>)
+                                                    : data.results.map(pokemon=> <PokeBall key={this.extractID(pokemon.url)} pokemonEndpoint={this.extractID(pokemon.url)}/>)
+                                                }
                                             </div>
                                         );
                                     }
-                                // data.results.forEach(pokemon => {
-                                //     let pokemonURL = pokemon.url;
-                                //     let pokemonId = pokemonURL.slice(34,pokemonURL.length-1);
-                                //     pokemonsCaught.push(<PokeBall key={pokemonId} pokemonEndpoint={pokemonId}/>);
-                                // });
-                                // return pokemonsCaught;
                                 }
                             }}
                 </Fetch>
@@ -119,19 +131,26 @@ class PokeList extends Component{
                 {
                     this.props.favouriteIds
                     ? 
-                    <div className="poke-ball-wrapper">
-                        {this.props.favouriteIds.map(id => <PokeBall key={""+id} pokemonEndpoint={""+id}/>)}
-                    </div>
+                        this.props.favourites
+                        ?
+                        <div className="poke-ball-wrapper">
+                            {this.props.favouriteIds.map(id => <PokeBall isFavourite={this.checkIfFavPokemon(id)} key={""+id} pokemonEndpoint={""+id}/>)}
+                        </div>
+                        :
+                        <div className="poke-ball-wrapper">
+                            {this.props.favouriteIds.map(id => <PokeBall key={""+id} pokemonEndpoint={""+id}/>)}
+                        </div>
+                    
                     :
-                    this.props.compare
-                    ? 
-                    <div className="compare-list">
-                        {this.fetchRequest(true)}
-                    </div>
-                    :
-                    <div className="poke-list">
-                        {this.fetchRequest(false)}
-                    </div>
+                        this.props.compare
+                        ? 
+                        <div className="compare-list">
+                            {this.fetchRequest(true)}
+                        </div>
+                        :
+                        <div className="poke-list">
+                            {this.fetchRequest(false)}
+                        </div>
                     
                 }
             </section>

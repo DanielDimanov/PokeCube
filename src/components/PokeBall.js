@@ -73,15 +73,19 @@ class PokeBall extends Component{
       }
       else{
         firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
-          this.setState({isFavourite:!this.state.isFavourite});
           if (!doc.exists) {
               let ids=[id];
+              this.setState({isFavourite:!this.state.isFavourite});
               return firebaseFirestore.collection("users").doc(this.props.user.uid).set({ids});
           } else {
               let ids = [];
               ids=ids.concat(doc.data().ids);
+              if(this.props.pokemonEndpoint in ids){
+                this.setState({isFavourite:true});
+              }
               let sameIdIndex = ids.indexOf(id);
               if(sameIdIndex>-1){
+                this.setState({isFavourite:!this.state.isFavourite});
                 ids.splice(sameIdIndex,1);
               }
               else{
@@ -100,11 +104,13 @@ class PokeBall extends Component{
     }
 
     getFavImage(){
-      if(this.state.isFavourite){
-        return <p> Fav</p>
+      let favIconPath;
+      if(this.state.isFavourite || this.props.isFavourite){
+        favIconPath = process.env.PUBLIC_URL+"/icons/fav.png";
       }else{
-        return <p> Not Fav</p>
+        favIconPath = process.env.PUBLIC_URL+"/icons/notFav.png";
       }
+      return favIconPath;
     }
 
 
@@ -115,7 +121,7 @@ class PokeBall extends Component{
             {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
             {
               this.props.user
-              ? this.getFavImage()
+              ? <img className="icon" title="favIcon" src={this.getFavImage()} />
               : ""
             }
         </div>

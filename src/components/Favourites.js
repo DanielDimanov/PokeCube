@@ -49,7 +49,7 @@ class Favourite extends Component {
           this.props.user
           ?
             this.state.favouriteIds
-            ?  <PokeList favouriteIds={this.state.favouriteIds}/>
+            ?  <PokeList favourites={this.state.favouriteIds} favouriteIds={this.state.favouriteIds}/>
             : <h1> Go and choose your favourite Pokemons!</h1>
           :
           <h1> You need to authenticate to use this feature! </h1>
