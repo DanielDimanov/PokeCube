@@ -31,7 +31,7 @@ class PokeList extends Component{
                     if(this.state.displayedItems>400){
                         alert("Caution! You are trying to display a lot of Pokemons. If you use certain browsers (such as Google Chrome) you may encounter memory issues and your browser may crash because currently the Pokemons are too powerful for their Poke balls. Please wait, some of them are hard to catch! Please enjoy the " + this.state.displayedItems + " Pokemons displayed currently!");
                     }
-                    this.readyForUpdate=false;
+                    this.readyForUpdate=true;
                     this.setState( prevState =>({
                         displayedItems: prevState.displayedItems + 30
                     }));
