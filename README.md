@@ -13,7 +13,10 @@ If a pokemon is fetched form the [PokeAPI](https://pokeapi.co/docs/v2.html) and 
 
 # DISCLAIMERS and Limitations
 
-The application is currently developed and optimised for a web browser! Although the functionality works for mobile aswell, the application and its design are not optimised to serve mobile devices! That is why using a mobile device especially on the page `Compare` will render a very unpleasant looking results. This is a design flow the developper is aware of and is in the TODO. Enjoy exploring pokemons! Go and see them all! 
+The application is currently developed and optimised for a web browser! Although some of the functionality works for mobile aswell, the application and its design are not optimised to serve mobile devices! That is why using a mobile device especially on the page `Compare` will render a very unpleasant looking results. This is a design and optimisation flow the developper is aware of and is in the TODO list. There is also a problem with the large amount of information that needs to be cached, which is also a problem, which the developer is aware of and is working on resolving. Please try to enjoy! Enjoy exploring pokemons! Go and see them all! 
+
+Because the application is temporary hosted on a protected server, PLEASE read the following message : 
+If the application crashes, or you decide to refresh it and you are not on the home page, the server will automatically decide that you are trying to access a resource you are not authenticated to see(not authenticated in the app, but in the server). In case you encounter a 403(Forbiden) error message, please head back to [PokeCube Home Page](https://danieldimanov.com/pokecube). Thank you! 
 
 The application currently uses free-tier Firebase backend service for caching and information storage, as well as authentication, which only allows for 50k reads per DAY. A read is done in the following instances:
 1. Getting cached Pokemon (if 850 Pokemons are displayed => 850 reads are made. If the Compare panel is filled with 1700 Pokemons => 1700 requests are made)
