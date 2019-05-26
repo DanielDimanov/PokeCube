@@ -1,5 +1,5 @@
 # PokeCube
-Currently the project [PokeCube](danieldimanov.com/pokecube) is deployed at https://danieldimanov.com/pokecube
+Currently the project [PokeCube](https://danieldimanov.com/pokecube) is deployed at https://danieldimanov.com/pokecube
 
 This project intends to:
 1. Allow users to browse Pokemons
