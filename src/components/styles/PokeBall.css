@@ -1,7 +1,19 @@
 @media only screen and (max-width: 600px) {
-    [class*="poke-"] {
-      background-color: #000;
+    [class="poke-ball"] {
+        height: auto !important;
+        width: 95% !important;
+        margin:0.5%;
+        background-color: #000;
+        background-repeat: no-repeat;
+        border: none;
+        border-radius: 2px;
+        padding: 2%;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
     }
+    [class="poke-pic"]{
+        width: auto !important;
+    }
+
   }
 
 
@@ -24,11 +36,13 @@ div{
 .poke-pic{
     padding: 0;
     margin: 0;
+    width: 200px;
+    height: 200px;
 
 }
 .poke-pic img{
-    height: 200px;
-    width: 200px;
+    height: fill;
+    width: fill;
     margin: 0 auto;
     vertical-align: center;
 }
