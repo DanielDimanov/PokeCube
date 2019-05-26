@@ -1,4 +1,6 @@
-#PokeCube
+# PokeCube
+Currently the project [PokeCube](danieldimanov.com/pokecube) is deployed at https://danieldimanov.com/pokecube
+
 This project intends to:
 1. Allow users to browse Pokemons
 2. Allow users to read and visualise Pokemon statistics
@@ -9,7 +11,9 @@ The project uses [PokeAPI](https://pokeapi.co/docs/v2.html) . All data displayed
 
 If a pokemon is fetched form the [PokeAPI](https://pokeapi.co/docs/v2.html) and is not present in the current cache (Firebase), then it is automatically stored and displayed from the [PokeAPI](https://pokeapi.co/docs/v2.html).
 
-#DISCLAIMERS and Limitations
+# DISCLAIMERS and Limitations
+
+The application is currently developed and optimised for a web browser! Although the functionality works for mobile aswell, the application and its design are not optimised to serve mobile devices! That is why using a mobile device especially on the page `Compare` will render a very unpleasant looking results. This is a design flow the developper is aware of and is in the TODO. Enjoy exploring pokemons! Go and see them all! 
 
 The application currently uses free-tier Firebase backend service for caching and information storage, as well as authentication, which only allows for 50k reads per DAY. A read is done in the following instances:
 1. Getting cached Pokemon (if 850 Pokemons are displayed => 850 reads are made. If the Compare panel is filled with 1700 Pokemons => 1700 requests are made)
@@ -20,6 +24,7 @@ There are limits for data writes as well, which is 20k writes, but the writes ar
 2. Pokemon was not cached and was fetched from the PokeAPI and is cached in Firebase
 
 Displaying 800+ pokemons requires lots of memory and some browsers (Like `Google Chrome`) throw an error, because of the predefined limitations, since the application is suspected of memory leakage. Work is currently being done to address this issue.
+
 
 # Run the project
 To successfully run the project first please install node and react and then run:
@@ -78,6 +83,10 @@ This project uses the [Alphine Node](https://github.com/mhart/alpine-node) proje
 ### React Request
 This project uses [React Request](https://www.npmjs.com/package/react-request), which allows for structured, easy and clear API calls and boosts the readability of the code.
 
+### Pokeball webpage icon
+The icon for the webpage was taken from [95C on Pixabay](https://pixabay.com/illustrations/pokeball-pokemon-game-ball-1594373/) 
+
+All other images are hand-made using [Affinity Photo](https://affinity.serif.com/en-gb/photo/)
 
 
 ## Available Scripts
