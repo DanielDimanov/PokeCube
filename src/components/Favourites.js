@@ -15,16 +15,31 @@ class Favourite extends Component {
 
   constructor(props){
     super(props);
-    this.state={favouriteIds: undefined};
+    this.state={readyForUpdate:true,favouriteIds: undefined};
+  }
+
+  componentDidMount(){
+    this.getFavourites();
   }
 
   componentDidUpdate(){
+    if(this.state.readyForUpdate){
+      this.setState({readyForUpdate:false},this.getFavourites());
+    }
+  }
+
+  getFavourites=()=>{
     if(this.props.user){
       firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
         if (doc.exists) {
           let ids = [];
-          ids=ids.concat(doc.data().ids);
-          this.setState({favouriteIds:ids});
+          if(doc.data().ids.length<1){
+            this.setState({favouriteIds:undefined});
+          }
+          else{
+            ids=ids.concat(doc.data().ids);
+            this.setState({favouriteIds:ids});
+          }
         }
       })
       .catch(err => {
@@ -34,15 +49,6 @@ class Favourite extends Component {
   }
 
   render() {
-    //Firebase session
-    const {
-      user,
-      signOut,
-      signInWithGoogle,
-    } = this.props;
-
-    
-
     return (
       <div className="App">
         {

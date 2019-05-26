@@ -3,8 +3,9 @@ import { Fetch } from 'react-request';
 
 //Import styling
 import './styles/PokeBall.css';
+
+//Import components
 import PokeStat from './PokeStat';
-import Pokemon from './Pokemon';
 
 //Import Spinner
 import Spinner from 'react-spinner-material';
@@ -34,17 +35,16 @@ class PokeBall extends Component{
         }
     }
 
-    // componentDidUpdate(){
-    //   this.isCached(this.props.pokemonEndpoint);
-    // }
-
     componentWillMount(){
-      this.isCached(this.props.pokemonEndpoint);
+      this.isCached(this.props.pokemonEndpoint)
     }
 
-    componentWillReceiveProps({pokemon}) {
+    componentWillReceiveProps({pokemon,isFavourite}) {
       if(pokemon){
         this.setState({cached:true, cachedData:pokemon , ready:true, pokemonEndpoint:""+pokemon.id});
+      }
+      if(isFavourite){
+        this.setState({isFavourite:isFavourite});
       }
     }
     
@@ -70,7 +70,7 @@ class PokeBall extends Component{
         firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
           if (!doc.exists) {
               let ids=[id];
-              this.setState({isFavourite:!this.state.isFavourite});
+              this.setState({isFavourite:true});
               return firebaseFirestore.collection("users").doc(this.props.user.uid).set({ids});
           } else {
               let ids = [];
@@ -84,7 +84,6 @@ class PokeBall extends Component{
                 this.setState({isFavourite:true});
                 ids.push(id);
               }
-              console.log(ids);
               return firebaseFirestore.collection("users").doc(this.props.user.uid).update({
                 ids
               });
@@ -98,22 +97,22 @@ class PokeBall extends Component{
 
     getFavImage(){
       let favIconPath="";
-      if(this.props.compare){
+      if(this.props.compare || this.props.selectPokemon){
         return "";
       }else{
-        if(this.state.isFavourite || this.props.isFavourite){
+        if(this.state.isFavourite){
           favIconPath = process.env.PUBLIC_URL+"/icons/fav.png";
         }else{
           favIconPath = process.env.PUBLIC_URL+"/icons/notFav.png";
         }
       }
-      return <img className={this.clName+"favIcon"} title="favIcon" src={favIconPath}/>
+      return <img alt="favIcon" className={this.clName+"favIcon"} title="favIcon" src={favIconPath}/>
     }
 
 
     pokeBallStructure = data => {
       return(
-        <div onClick={() => this.props.selectPokemon? this.props.selectPokemon(data) : this.recruitPokemon(data.id)}>
+        <div onClick={() => this.props.selectPokemon? this.props.selectPokemon(data, this.state.isFavourite) : this.recruitPokemon(data.id)}>
         <div className={this.clName+"poke-name"}>
             {data.name.charAt(0).toUpperCase() + data.name.slice(1)} 
             {
@@ -178,7 +177,7 @@ class PokeBall extends Component{
         else{
           if(this.state.ready){
             return (
-              <div className={this.clName+"poke-ball"} onClick={() => this.props.selectPokemon? this.props.selectPokemon(this.state.cachedData) : this.recruitPokemon(this.props.pokemonEndpoint)}>
+              <div className={this.clName+"poke-ball"}>
                 { this.pokeBallStructure(this.state.cachedData)}
               </div>
             )

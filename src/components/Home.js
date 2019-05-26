@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {providers,firebaseAppAuth} from './Firebase';
 import { firebaseFirestore} from './Firebase';
 import withFirebaseAuth from 'react-with-firebase-auth';
-import 'firebase/auth';
+// import 'firebase/auth';
 
 //Import the nested components
 import PokeList from './PokeList';
@@ -16,15 +16,11 @@ class Home extends Component {
 
   constructor(props){
     super(props);
-    this.state={favourites:undefined};
-    this.getAllFavourites = this.getAllFavourites.bind(this);
+    this.state={favourites:undefined,readyForUpdate:false};
   }
 
-  getAllFavourites(){
-    if (!this.props.user){
-      console.log("User needs to be logged in to retrieve favourites!");
-    }
-    else{
+  getAllFavourites= () => {
+    if (this.props.user){
       firebaseFirestore.collection("users").doc(this.props.user.uid).get().then(doc => {
         if (doc.exists) {
           let ids = [];
@@ -36,10 +32,22 @@ class Home extends Component {
         console.log("Error getting document  error:", err);
       });
     }
+    else{
+      this.setState({favourites:undefined});
+    }
+  }
+
+  //Included because of a current Firebase issue, that can be solved by this 
+  //shady code pattern
+  componentDidUpdate(){
+    if(this.state.readyForUpdate){
+      this.setState({readyForUpdate:false},this.getAllFavourites());
+    }
   }
 
   componentWillReceiveProps() {
     this.getAllFavourites();
+    this.setState({readyForUpdate:true});
   }
 
   componentDidMount(){

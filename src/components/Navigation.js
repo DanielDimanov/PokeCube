@@ -6,13 +6,11 @@ import Compare from './Compare';
 
 //Import Firebase
 import {providers,firebaseAppAuth} from './Firebase';
-import { FirestoreProvider } from "@react-firebase/firestore";
 import withFirebaseAuth from 'react-with-firebase-auth';
 import 'firebase/auth';
-import firebaseConfig from '../env/firebaseConfig';
 
 //Import Router
-import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 
 //Import styling
 import './styles/Navigation.css';
@@ -33,7 +31,7 @@ class Navigation extends Component {
 
     return (
       <div className="Navigation">
-        <Router>
+        <Router basename="/pokecube">
         <div>
             <nav>
             <ul>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import DetailView from './Compare/DetailView';
-import PokeList from './PokeList';
+import DetailView from './DetailView';
 
 class Compare extends Component {
 

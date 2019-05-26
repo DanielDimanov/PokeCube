@@ -16,13 +16,10 @@ class PokeList extends Component{
 
     constructor(props){
         super(props);
-        this.state={ready:false,displayedItems:50};
-        this.handleScroll = this.handleScroll.bind(this);
-        this.checkIfFavPokemon = this.checkIfFavPokemon.bind(this);
+        this.state={ready:false,displayedItems:25};
     }
 
-    handleScroll() {
-        // await this.delay(this.state.displayedItems*3);
+    handleScroll= ()=> {
         if(this.readyForUpdate){
             let windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
             let body = document.body;
@@ -32,48 +29,35 @@ class PokeList extends Component{
             if (windowBottom >= docHeight) {
                 if(this.state.displayedItems<797){
                     if(this.state.displayedItems>400){
-                        alert("Caution! You are trying to display a lot of Pokemons. If you use certain browsers" +
-                        "(such as Google Chrome) you may encounter memory issues and your browser may crash because currently the Pokemons are too powerful for their Poke balls. Please wait, some of them are hard to catch!" + "Please enjoy the " + this.state.displayedItems + " Pokemons displayed currently!");
+                        alert("Caution! You are trying to display a lot of Pokemons. If you use certain browsers (such as Google Chrome) you may encounter memory issues and your browser may crash because currently the Pokemons are too powerful for their Poke balls. Please wait, some of them are hard to catch! Please enjoy the " + this.state.displayedItems + " Pokemons displayed currently!");
                     }
                     this.readyForUpdate=false;
                     this.setState( prevState =>({
-                        displayedItems: prevState.displayedItems + 100
+                        displayedItems: prevState.displayedItems + 30
                     }));
                 }
                 else{
-                    alert("Pokemoms are being caught. Please wait, some of them are hard to catch!" + "Please enjoy the " + this.state.displayedItems + " Pokemons displayed currently!");
+                    alert("Pokemoms are being caught. Please wait, some of them are hard to catch! Please enjoy the " + this.state.displayedItems + " Pokemons displayed currently!");
                     window.removeEventListener("scroll", this.handleScroll);
                 }
             } 
         }
       }
 
-      componentDidUpdate(){
+    componentWillMount() {
         this.readyForUpdate = true;
         window.addEventListener("scroll", this.handleScroll);
-      }
-
-      componentWillUpdate(){
-        this.readyForUpdate = false;
-        window.removeEventListener("scroll", this.handleScroll);
-      }
-
-      componentDidMount() {
-        window.addEventListener("scroll", this.handleScroll);
-      }
+    }
     
-      componentWillUnmount() {
+    componentWillUnmount() {
         window.removeEventListener("scroll", this.handleScroll);
-
-      }
-      
+    } 
 
     selectPokemonInList = (id) =>{
         this.props.selectPokemon(id);
     }
 
-    //TODO
-    checkIfFavPokemon(id){
+    checkIfFavPokemon= (id)=> {
         if(this.props.favourites.includes(id)){
             return true;
         }else{
